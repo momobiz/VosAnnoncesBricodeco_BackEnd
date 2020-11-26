@@ -5,6 +5,8 @@ const {userRule, validator}=require("../Middleware/validator.js");
 
 const router=express.Router();
 
-router.get('/',getUsers); 
-router.post('/',userRule(), validator, createUsers);
+router.get('/showusers',getUsers); 
+router.post('/createuser',userRule(), validator, createUsers);
+
+
 module.exports=router;

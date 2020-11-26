@@ -22,7 +22,7 @@ const port=process.env.Port||5000;
 
 app.listen(port, ()=>{
     try{
-        console.log(`server is listeneing on port ${port}`)
+        console.log(`server is listening on port ${port}`)
 
     }catch(error){
             console.log(message.error);
