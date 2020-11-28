@@ -13,6 +13,7 @@ const userSchema=new mongoose.Schema({
      
         
     },
+    
     phone:{
         type:Number,
         unique:true
@@ -23,7 +24,8 @@ const userSchema=new mongoose.Schema({
         type:String,
         unique:true
        
-        }
+        },
+    avatar:String
 
        
     }

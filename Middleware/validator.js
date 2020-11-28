@@ -24,3 +24,15 @@ exports.validator=(req, res, next)=>{
    const error=validationResult(req);
    error.isEmpty()?next():res.status(404).json({errors:error.array()})
 }
+
+exports.userRuleAuth=()=>[
+    
+
+    check("password",'this field is required')
+    .exists(),
+
+    check("email",'this field is required')
+    .isEmail()
+
+                                 
+]

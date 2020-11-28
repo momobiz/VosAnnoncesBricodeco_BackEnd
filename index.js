@@ -4,6 +4,7 @@ const cors=require("cors");
 const postsRouter=require("./Routes/posts.js");
 const usersRouter=require("./Routes/users.js");
 
+const auth=require("./Middleware/auth.js")
 
 const app=express();
 app.use(express.json());
@@ -12,6 +13,8 @@ connectDB();
 
 app.use('/posts', postsRouter); 
 app.use('/users',usersRouter); 
+
+//app.use("/test",auth, (req, res)=>res.json({message:"reussite de l authentification"}) )
 
 const port=process.env.Port||5000;
 
