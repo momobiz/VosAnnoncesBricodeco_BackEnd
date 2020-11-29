@@ -36,3 +36,7 @@ exports.userRuleAuth=()=>[
 
                                  
 ]
+exports.commentRule=()=>[
+    check("text", "this field is required ").notEmpty()
+
+]

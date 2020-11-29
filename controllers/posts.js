@@ -1,4 +1,6 @@
-const Posts=require("../Models/Posts.js"); 
+const { json } = require("express");
+const Posts=require("../Models/Posts.js");
+const Users=require("../Models/Users.js");
 
 // affichage de tous les annonces du plus récent au moins récent
 exports.getPosts=async(req, res)=>{
@@ -16,7 +18,28 @@ exports.getPosts=async(req, res)=>{
 }
 // creation d une annonce 
 exports.createPosts=async(req, res)=>{
-   const newPost=new Posts(req.body); 
+
+    // const newPost=new Posts(req.body);
+    const user=await Users.findById(req.id);
+
+    const {title, category, photo, description, price,duration,phone, city}=req.body;
+
+   
+   const newPost=new Posts({
+       idUser:req.id,
+       userName:user.userName,
+       avatar:user.avatar,
+       title,
+       category,
+       photo,
+       description,
+       price,
+       
+       duration,
+       phone,
+       city
+
+   })
    try{
        await newPost.save(); 
        res.status(201).json(newPost);
@@ -26,7 +49,7 @@ exports.createPosts=async(req, res)=>{
    }
 
 }
-// mise a  jour d une annonce 
+// update Posts
 exports.updatePosts=async(req, res)=>{
         
     
@@ -41,14 +64,16 @@ try{
 }
 
 }
+
 // supprimer une annonce par id 
+
 exports.deletePosts=async(req, res)=>{
     try{
         await Posts.findOneAndDelete({_id:req.params.id});
         res.status(200).json(`post  with id ${req.params.id} has been  deleted`)
 
     }catch(error){
-        res.status(404).json({message:message.error}); 
+        res.status(404).json({error}); 
 
     }
 
@@ -78,6 +103,44 @@ exports.getPostsbyKey=async(req, res)=>{
 
     }catch(error){
         res.status(404).json({message:message.error}); 
+    }
+
+}
+// get my posts 
+exports.getMyPosts=async(req, res)=>{
+    try{
+        const posts=await Posts.find({idUser:req.id}).sort({publishedAt:'desc'});
+        if(!posts) return json("inexistant posts");
+        res.status(201).json(posts);
+    }catch(error){
+        res.status(401).json('server error')
+    }
+    
+
+}
+/******************************************/
+/*****        post comment           ******/
+/**************************************** */
+exports.postComment=async(req, res)=>{
+
+    try{
+        const user=await Users.findById(req.id);
+       const post= await Posts.findById(req.params.id_post);
+     
+
+     const newComment={
+         text:req.body.text,
+         idUser:req.id,
+         userName:user.userName
+     }
+ 
+      post.comments.unshift(newComment);
+   
+        await post.save(); 
+        res.status(201).json(post);
+ 
+    }catch(error){
+        res.status(404).json({message:error.message})
     }
 
 }
