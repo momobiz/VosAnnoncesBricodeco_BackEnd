@@ -42,7 +42,7 @@ const postsSchema=new mongoose.Schema({
         type:String,
        // required:true
     },
-    photo:[String],
+    photo:String,
     description:String,
     price:Number,
     publishedAt:{

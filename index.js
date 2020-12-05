@@ -4,10 +4,15 @@ const cors=require("cors");
 const postsRouter=require("./Routes/posts.js");
 const usersRouter=require("./Routes/users.js");
 
-const auth=require("./Middleware/auth.js")
+const auth=require("./Middleware/auth.js"); 
+const path = require('path');
+
 
 const app=express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/images', express.static('images'));
+
 app.use(cors());
 connectDB();
 

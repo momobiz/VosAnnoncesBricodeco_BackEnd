@@ -1,6 +1,7 @@
 const { json } = require("express");
 const Posts=require("../Models/Posts.js");
 const Users=require("../Models/Users.js");
+const path=require("path");
 
 // affichage de tous les annonces du plus récent au moins récent
 exports.getPosts=async(req, res)=>{
@@ -20,9 +21,12 @@ exports.getPosts=async(req, res)=>{
 exports.createPosts=async(req, res)=>{
 
     // const newPost=new Posts(req.body);
+
+
     const user=await Users.findById(req.id);
 
-    const {title, category, photo, description, price,duration,phone, city}=req.body;
+    const {title, category, description, price,duration,phone, city}=req.body;
+    const {file}=req;
 
    
    const newPost=new Posts({
@@ -31,7 +35,7 @@ exports.createPosts=async(req, res)=>{
        avatar:user.avatar,
        title,
        category,
-       photo,
+       photo:file && file.path||null,
        description,
        price,
        
@@ -49,6 +53,54 @@ exports.createPosts=async(req, res)=>{
    }
 
 }
+/***************************************************** */
+// test la creation de post
+exports.createPosts1=async(req, res, next )=>{
+
+    // const newPost=new Posts(req.body);
+    //const user=await Users.findById(req.id);
+
+  console.log('createpost1');
+
+    const {title, category, description, price,duration,phone, city}=req.body;
+    const {file}=req;
+
+    
+
+
+   const newPost=new Posts({
+       idUser:"5fc168ab1c8cc62b2cba88b9",
+       userName:"hamiodu",
+       avatar:"//www.gravatar.com/avatar/16193956ea3c250a91b71bb5c13b1812?s=200&r=pg&d=mm",
+       title,
+       category,
+       photo:file && file.path||null,
+       description,
+       price,
+       
+       duration,
+       phone,
+       city
+
+   })
+   try{
+       await newPost.save(); 
+       res.status(201).json(newPost);
+
+       
+
+       
+      
+    
+     
+      
+
+   }catch(error){
+       res.status(404).json({message:error.message})
+   }
+
+}
+/************************************************************* */
 // update Posts
 exports.updatePosts=async(req, res)=>{
         
