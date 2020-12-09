@@ -19,19 +19,25 @@ exports.getUsers=async(req, res)=>{
 }
 
 exports.createUsers=async(req, res)=>{
-    const {userName, password,phone, city, email }=req.body; 
-    const avatar=await gravatar.url(email, {
-        s:'200',
-        r:'pg',
-        d:'mm'
-    });
-    const newUser=new Users({userName, password,phone, city, email, avatar}); 
-  
+    const {userName, password,phone, city, email, professionnal }=req.body; 
+    const searchUser=await Users.findOne({email});
+    if(searchUser) return res.status(404).json('email is already used');
+
+
     
-    const salt=await bcrypt.genSalt(10);
-    newUser.password=await bcrypt.hash(password, salt);
    
     try{
+        const avatar=await gravatar.url(email, {
+            s:'200',
+            r:'pg',
+            d:'mm'
+        });
+        const newUser=new Users({userName, password,phone, city, email, avatar, professionnal}); 
+      
+        
+        const salt=await bcrypt.genSalt(10);
+        newUser.password=await bcrypt.hash(password, salt);
+
        
         await newUser.save();
         // creation d un token 
