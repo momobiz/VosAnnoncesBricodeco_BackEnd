@@ -11,8 +11,9 @@ const router=express.Router();
 
 
 router.get('/showposts', getPosts);
-router.post('/createpost', auth, postRule(), validator, createPosts);
+router.post('/createpost', auth, multer, postRule(), validator, createPosts);
 /************************************************************************* */
+// createPost1 Methode pour tester l insertion des annonces pour un user prédéfinit
 router.post('/createpost1', multer, postRule(),validator,createPosts1);
 
 

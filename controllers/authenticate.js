@@ -5,6 +5,8 @@ const bcrypt=require("bcrypt");
 
 exports.authenticate= async(req, res)=>{
     const {email, password}=req.body;
+ 
+  
     try{
         const user= await Users.findOne({email:email
                                      });
@@ -24,6 +26,8 @@ exports.authenticate= async(req, res)=>{
               config.get("SECRET"), 
              { expiresIn:36000}          
               )
+              
+       
               res.json(token);
 
     

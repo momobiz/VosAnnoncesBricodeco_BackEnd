@@ -21,7 +21,7 @@ exports.getPosts=async(req, res)=>{
 exports.createPosts=async(req, res)=>{
 
     // const newPost=new Posts(req.body);
-
+console.log("createPosts")
 
     const user=await Users.findById(req.id);
 
